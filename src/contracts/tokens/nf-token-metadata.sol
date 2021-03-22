@@ -7,11 +7,7 @@ import "./erc721-metadata.sol";
 /**
  * @dev Optional metadata implementation for ERC-721 non-fungible token standard.
  */
-contract NFTokenMetadata is
-  NFToken,
-  ERC721Metadata
-{
-
+contract NFTokenMetadata is NFToken, ERC721Metadata {
   /**
    * @dev A descriptive name for a collection of NFTs.
    */
@@ -25,14 +21,13 @@ contract NFTokenMetadata is
   /**
    * @dev Mapping from NFT ID to metadata uri.
    */
-  mapping (uint256 => string) internal idToUri;
+  mapping(uint256 => string) internal idToUri;
 
   /**
    * @dev Contract constructor.
    * @notice When implementing this contract don't forget to set nftName and nftSymbol.
    */
-  constructor()
-  {
+  constructor() {
     supportedInterfaces[0x5b5e139f] = true; // ERC721Metadata
   }
 
@@ -40,12 +35,7 @@ contract NFTokenMetadata is
    * @dev Returns a descriptive name for a collection of NFTokens.
    * @return _name Representing name.
    */
-  function name()
-    external
-    override
-    view
-    returns (string memory _name)
-  {
+  function name() external view override returns (string memory _name) {
     _name = nftName;
   }
 
@@ -53,12 +43,7 @@ contract NFTokenMetadata is
    * @dev Returns an abbreviated name for NFTokens.
    * @return _symbol Representing symbol.
    */
-  function symbol()
-    external
-    override
-    view
-    returns (string memory _symbol)
-  {
+  function symbol() external view override returns (string memory _symbol) {
     _symbol = nftSymbol;
   }
 
@@ -67,12 +52,10 @@ contract NFTokenMetadata is
    * @param _tokenId Id for which we want uri.
    * @return URI of _tokenId.
    */
-  function tokenURI(
-    uint256 _tokenId
-  )
+  function tokenURI(uint256 _tokenId)
     external
-    override
     view
+    override
     validNFToken(_tokenId)
     returns (string memory)
   {
@@ -87,17 +70,10 @@ contract NFTokenMetadata is
    * NFT.
    * @param _tokenId ID of the NFT to be burned.
    */
-  function _burn(
-    uint256 _tokenId
-  )
-    internal
-    override
-    virtual
-  {
+  function _burn(uint256 _tokenId) internal virtual override {
     super._burn(_tokenId);
 
-    if (bytes(idToUri[_tokenId]).length != 0)
-    {
+    if (bytes(idToUri[_tokenId]).length != 0) {
       delete idToUri[_tokenId];
     }
   }
@@ -110,14 +86,7 @@ contract NFTokenMetadata is
    * @param _tokenId Id for which we want URI.
    * @param _uri String representing RFC 3986 URI.
    */
-  function _setTokenUri(
-    uint256 _tokenId,
-    string memory _uri
-  )
-    internal
-    validNFToken(_tokenId)
-  {
+  function _setTokenUri(uint256 _tokenId, string memory _uri) internal validNFToken(_tokenId) {
     idToUri[_tokenId] = _uri;
   }
-
 }

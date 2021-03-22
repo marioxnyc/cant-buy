@@ -6,10 +6,7 @@ import "./erc165.sol";
 /**
  * @dev Implementation of standard for detect smart contract interfaces.
  */
-contract SupportsInterface is
-  ERC165
-{
-
+contract SupportsInterface is ERC165 {
   /**
    * @dev Mapping of supported intefraces. You must not set element 0xffffffff to true.
    */
@@ -18,8 +15,7 @@ contract SupportsInterface is
   /**
    * @dev Contract constructor.
    */
-  constructor()
-  {
+  constructor() {
     supportedInterfaces[0x01ffc9a7] = true; // ERC165
   }
 
@@ -28,15 +24,7 @@ contract SupportsInterface is
    * @param _interfaceID Id of the interface.
    * @return True if _interfaceID is supported, false otherwise.
    */
-  function supportsInterface(
-    bytes4 _interfaceID
-  )
-    external
-    override
-    view
-    returns (bool)
-  {
+  function supportsInterface(bytes4 _interfaceID) external view override returns (bool) {
     return supportedInterfaces[_interfaceID];
   }
-
 }

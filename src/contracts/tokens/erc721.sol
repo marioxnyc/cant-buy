@@ -5,41 +5,27 @@ pragma solidity 0.8.0;
  * @dev ERC-721 non-fungible token standard.
  * See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md.
  */
-interface ERC721
-{
-
+interface ERC721 {
   /**
    * @dev Emits when ownership of any NFT changes by any mechanism. This event emits when NFTs are
    * created (`from` == 0) and destroyed (`to` == 0). Exception: during contract creation, any
    * number of NFTs may be created and assigned without emitting Transfer. At the time of any
    * transfer, the approved address for that NFT (if any) is reset to none.
    */
-  event Transfer(
-    address indexed _from,
-    address indexed _to,
-    uint256 indexed _tokenId
-  );
+  event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId);
 
   /**
    * @dev This emits when the approved address for an NFT is changed or reaffirmed. The zero
    * address indicates there is no approved address. When a Transfer event emits, this also
    * indicates that the approved address for that NFT (if any) is reset to none.
    */
-  event Approval(
-    address indexed _owner,
-    address indexed _approved,
-    uint256 indexed _tokenId
-  );
+  event Approval(address indexed _owner, address indexed _approved, uint256 indexed _tokenId);
 
   /**
    * @dev This emits when an operator is enabled or disabled for an owner. The operator can manage
    * all NFTs of the owner.
    */
-  event ApprovalForAll(
-    address indexed _owner,
-    address indexed _operator,
-    bool _approved
-  );
+  event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
 
   /**
    * @dev Transfers the ownership of an NFT from one address to another address.
@@ -59,8 +45,7 @@ interface ERC721
     address _to,
     uint256 _tokenId,
     bytes calldata _data
-  )
-    external;
+  ) external;
 
   /**
    * @dev Transfers the ownership of an NFT from one address to another address.
@@ -74,8 +59,7 @@ interface ERC721
     address _from,
     address _to,
     uint256 _tokenId
-  )
-    external;
+  ) external;
 
   /**
    * @dev Throws unless `msg.sender` is the current owner, an authorized operator, or the approved
@@ -91,8 +75,7 @@ interface ERC721
     address _from,
     address _to,
     uint256 _tokenId
-  )
-    external;
+  ) external;
 
   /**
    * @dev Set or reaffirm the approved address for an NFT.
@@ -101,11 +84,7 @@ interface ERC721
    * @param _approved The new approved NFT controller.
    * @param _tokenId The NFT to approve.
    */
-  function approve(
-    address _approved,
-    uint256 _tokenId
-  )
-    external;
+  function approve(address _approved, uint256 _tokenId) external;
 
   /**
    * @dev Enables or disables approval for a third party ("operator") to manage all of
@@ -114,11 +93,7 @@ interface ERC721
    * @param _operator Address to add to the set of authorized operators.
    * @param _approved True if the operators is approved, false to revoke approval.
    */
-  function setApprovalForAll(
-    address _operator,
-    bool _approved
-  )
-    external;
+  function setApprovalForAll(address _operator, bool _approved) external;
 
   /**
    * @dev Returns the number of NFTs owned by `_owner`. NFTs assigned to the zero address are
@@ -126,12 +101,7 @@ interface ERC721
    * @param _owner Address for whom to query the balance.
    * @return Balance of _owner.
    */
-  function balanceOf(
-    address _owner
-  )
-    external
-    view
-    returns (uint256);
+  function balanceOf(address _owner) external view returns (uint256);
 
   /**
    * @dev Returns the address of the owner of the NFT. NFTs assigned to zero address are considered
@@ -139,12 +109,7 @@ interface ERC721
    * @param _tokenId The identifier for an NFT.
    * @return Address of _tokenId owner.
    */
-  function ownerOf(
-    uint256 _tokenId
-  )
-    external
-    view
-    returns (address);
+  function ownerOf(uint256 _tokenId) external view returns (address);
 
   /**
    * @dev Get the approved address for a single NFT.
@@ -152,12 +117,7 @@ interface ERC721
    * @param _tokenId The NFT to find the approved address for.
    * @return Address that _tokenId is approved for.
    */
-  function getApproved(
-    uint256 _tokenId
-  )
-    external
-    view
-    returns (address);
+  function getApproved(uint256 _tokenId) external view returns (address);
 
   /**
    * @dev Returns true if `_operator` is an approved operator for `_owner`, false otherwise.
@@ -165,12 +125,5 @@ interface ERC721
    * @param _operator The address that acts on behalf of the owner.
    * @return True if approved for all, false otherwise.
    */
-  function isApprovedForAll(
-    address _owner,
-    address _operator
-  )
-    external
-    view
-    returns (bool);
-
+  function isApprovedForAll(address _owner, address _operator) external view returns (bool);
 }
