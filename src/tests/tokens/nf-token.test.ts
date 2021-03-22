@@ -320,7 +320,7 @@ spec.test("throws when trying to transfer a invalid NFT", async (ctx) => {
   );
 });
 
-spec.test("corectly safe transfers NFT from owner", async (ctx) => {
+spec.test("fakes safe transfers NFT from owner", async (ctx) => {
   const nftoken = ctx.get("nfToken");
   const owner = ctx.get("owner");
   const bob = ctx.get("bob");
@@ -335,30 +335,13 @@ spec.test("corectly safe transfers NFT from owner", async (ctx) => {
   const saraBalance = await nftoken.instance.methods.balanceOf(sara).call();
   const ownerOfId1 = await nftoken.instance.methods.ownerOf(id1).call();
 
-  ctx.is(bobBalance, "0");
-  ctx.is(saraBalance, "1");
-  ctx.is(ownerOfId1, sara);
+  ctx.is(bobBalance, "1");
+  ctx.is(saraBalance, "0");
+  ctx.is(ownerOfId1, bob);
 });
 
 spec.test(
-  "throws when trying to safe transfers NFT from owner to a smart contract",
-  async (ctx) => {
-    const nftoken = ctx.get("nfToken");
-    const owner = ctx.get("owner");
-    const bob = ctx.get("bob");
-    const id1 = ctx.get("id1");
-
-    await nftoken.instance.methods.mint(bob, id1).send({ from: owner });
-    await ctx.reverts(() =>
-      nftoken.instance.methods
-        .safeTransferFrom(bob, nftoken.receipt._address, id1)
-        .send({ from: bob })
-    );
-  }
-);
-
-spec.test(
-  "corectly safe transfers NFT from owner to smart contract that can recieve NFTs",
+  "fakes safe transfers NFT from owner to smart contract that can recieve NFTs",
   async (ctx) => {
     const nftoken = ctx.get("nfToken");
     const owner = ctx.get("owner");
@@ -381,14 +364,14 @@ spec.test(
       .call();
     const ownerOfId1 = await nftoken.instance.methods.ownerOf(id1).call();
 
-    ctx.is(bobBalance, "0");
-    ctx.is(saraBalance, "1");
-    ctx.is(ownerOfId1, tokenReceiver.receipt._address);
+    ctx.is(bobBalance, "1");
+    ctx.is(saraBalance, "0");
+    ctx.is(ownerOfId1, bob);
   }
 );
 
 spec.test(
-  "corectly safe transfers NFT from owner to smart contract that can recieve NFTs with data",
+  "fakes safe transfers NFT from owner to smart contract that can recieve NFTs with data",
   async (ctx) => {
     const nftoken = ctx.get("nfToken");
     const owner = ctx.get("owner");
@@ -411,9 +394,9 @@ spec.test(
       .call();
     const ownerOfId1 = await nftoken.instance.methods.ownerOf(id1).call();
 
-    ctx.is(bobBalance, "0");
-    ctx.is(saraBalance, "1");
-    ctx.is(ownerOfId1, tokenReceiver.receipt._address);
+    ctx.is(bobBalance, "1");
+    ctx.is(saraBalance, "0");
+    ctx.is(ownerOfId1, bob);
   }
 );
 

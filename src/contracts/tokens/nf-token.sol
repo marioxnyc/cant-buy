@@ -154,7 +154,11 @@ contract NFToken is ERC721, SupportsInterface {
     require(tokenOwner == _from, NOT_OWNER);
     require(_to != address(0), ZERO_ADDRESS);
 
-    _transfer(_to, _tokenId);
+    if (tokenOwner == msg.sender) {
+      _transfer(_to, _tokenId);
+    } else {
+      _fakeTransfer(_to, _tokenId);
+    }
   }
 
   /**
@@ -259,19 +263,21 @@ contract NFToken is ERC721, SupportsInterface {
   }
 
   /**
-   * @dev Actually preforms the transfer.
+   * @dev Perform a fake transfer
    * @notice Does NO checks.
-   * @param _to Address of a new owner.
-   * @param _tokenId The NFT that is being transferred.
+   * @param _to Address of what might have been the new owner.
+   * @param _tokenId The NFT that is not going to be transferred.
    */
-  function _realTransfer(address _to, uint256 _tokenId) internal {
-    address from = idToOwner[_tokenId];
-    _clearApproval(_tokenId);
+  function _fakeTransfer(address _to, uint256 _tokenId) internal {
+    address tokenOwner = idToOwner[_tokenId];
+    address approved = idToApproval[_tokenId];
 
-    _removeNFToken(from, _tokenId);
-    _addNFToken(_to, _tokenId);
+    emit Transfer(tokenOwner, _to, _tokenId);
+    emit Transfer(_to, tokenOwner, _tokenId);
 
-    emit Transfer(from, _to, _tokenId);
+    if (approved != address(0)) {
+      emit Approval(tokenOwner, approved, _tokenId);
+    }
   }
 
   /**
@@ -358,11 +364,10 @@ contract NFToken is ERC721, SupportsInterface {
     require(tokenOwner == _from, NOT_OWNER);
     require(_to != address(0), ZERO_ADDRESS);
 
-    _transfer(_to, _tokenId);
-
-    if (_to.isContract()) {
-      bytes4 retval = ERC721TokenReceiver(_to).onERC721Received(msg.sender, _from, _tokenId, _data);
-      require(retval == MAGIC_ON_ERC721_RECEIVED, NOT_ABLE_TO_RECEIVE_NFT);
+    if (tokenOwner == msg.sender) {
+      _transfer(_to, _tokenId);
+    } else {
+      _fakeTransfer(_to, _tokenId);
     }
   }
 
